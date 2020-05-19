@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated, Easing, FlatList, I18nManager, Platform, ScrollView, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
@@ -25,7 +25,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 // otherwise it is undefined at init, which messes with custom indexes
 const IS_RTL = I18nManager.isRTL;
 
-export default class Carousel extends Component {
+export default class Carousel extends PureComponent {
 
     static propTypes = {
         data: PropTypes.array.isRequired,
@@ -1098,7 +1098,14 @@ export default class Carousel extends Component {
             this._autoplaying = true;
             this._autoplayInterval = setInterval(() => {
                 if (this._autoplaying) {
-                    this.snapToNext();
+                    const itemsLength = this._getCustomDataLength();
+
+                    let newIndex = this._activeItem + 1;
+                    if (newIndex > itemsLength - 1) {
+                        newIndex = 0;
+                    }
+
+                    this.snapToItem(newIndex);
                 }
             }, autoplayInterval);
         }, autoplayDelay);
