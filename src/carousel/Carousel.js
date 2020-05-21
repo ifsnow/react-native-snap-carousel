@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Animated, Easing, FlatList, I18nManager, Platform, ScrollView, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
-import shallowCompare from 'react-addons-shallow-compare';
 import {
     defaultScrollInterpolator,
     stackScrollInterpolator,
@@ -201,14 +200,6 @@ export default class Carousel extends PureComponent {
                 apparitionCallback();
             }
         });
-    }
-
-    shouldComponentUpdate (nextProps, nextState) {
-        if (this.props.shouldOptimizeUpdates === false) {
-            return true;
-        } else {
-            return shallowCompare(this, nextProps, nextState);
-        }
     }
 
     componentDidUpdate (prevProps) {
